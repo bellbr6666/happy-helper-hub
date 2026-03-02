@@ -1,1 +1,4 @@
 project_id = "zuybxwrxghdsnviqamkd"
+
+[functions.anubispay-pix]
+verify_jwt = false

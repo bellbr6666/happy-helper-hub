@@ -64,7 +64,7 @@ export function PaymentModal({
     await new Promise((r) => setTimeout(r, 650));
 
     try {
-      const created = await createPixCharge(effectiveAmount);
+      const created = await createPixCharge({ amount: effectiveAmount });
       setCharge(created);
       setView("waiting");
     } catch {
