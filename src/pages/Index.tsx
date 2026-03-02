@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PaymentModal } from "@/components/payment/PaymentModal";
 
 const CURRENCY = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -14,7 +14,7 @@ const CURRENCY = new Intl.NumberFormat("pt-BR", {
 });
 
 const Index = () => {
-  const [paymentOpen, setPaymentOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Dados estáticos (conforme solicitado)
   const campaign = useMemo(
@@ -215,7 +215,7 @@ const Index = () => {
                 </CardHeader>
 
                 <CardContent className="space-y-3">
-                  <Button className="w-full" size="lg" onClick={() => setPaymentOpen(true)}>
+                  <Button className="w-full" size="lg" onClick={() => navigate("/checkout")}>
                     Quero Ajudar
                   </Button>
                   <p className="text-xs text-muted-foreground">
@@ -241,13 +241,13 @@ const Index = () => {
               <p className="truncate text-xs text-muted-foreground">{CURRENCY.format(campaign.raised)} arrecadados</p>
               <p className="text-sm font-semibold">Ajude agora</p>
             </div>
-            <Button size="lg" className="shrink-0" onClick={() => setPaymentOpen(true)}>
+            <Button size="lg" className="shrink-0" onClick={() => navigate("/checkout")}>
               Quero Ajudar
             </Button>
           </div>
         </div>
 
-        <PaymentModal open={paymentOpen} onOpenChange={setPaymentOpen} defaultAmount={50} />
+        
       </main>
     </div>
   );
