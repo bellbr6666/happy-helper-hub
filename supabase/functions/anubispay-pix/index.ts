@@ -112,13 +112,17 @@ Deno.serve(async (req) => {
     }
 
     const transaction = providerData?.data ?? providerData;
+    const pix = transaction?.pix ?? {};
+
+    const pixCopyPaste = pix?.qrcode ?? pix?.copyPaste ?? pix?.payload ?? null;
+    const qrCodeUrl = pix?.receiptUrl ?? pix?.qrcodeImage ?? pix?.qrCodeUrl ?? null;
 
     return new Response(
       JSON.stringify({
         paymentId: transaction?.id,
         status: transaction?.status,
-        pixCopyPaste: transaction?.pix?.qrcode ?? transaction?.pix?.copyPaste ?? null,
-        qrCodeUrl: transaction?.pix?.receiptUrl ?? null,
+        pixCopyPaste,
+        qrCodeUrl,
       }),
       {
         status: 200,

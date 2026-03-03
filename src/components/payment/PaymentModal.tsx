@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { PixQrCode } from "@/components/payment/PixQrCode";
 import { createPixCharge, type PixCharge } from "@/services/paymentService";
 
 type PaymentView = "choose" | "loading" | "waiting" | "success" | "error";
@@ -181,10 +182,7 @@ export function PaymentModal({
 
                   <div className="mt-3 overflow-hidden rounded-lg border bg-background">
                     <div className="grid place-items-center p-4">
-                      {/* Placeholder do QR */}
-                      <div className="grid h-[180px] w-[180px] place-items-center rounded-md bg-muted/40">
-                        <span className="text-xs text-muted-foreground">QR Code</span>
-                      </div>
+                      <PixQrCode pixCode={charge.pixCopyPaste} qrCodeUrl={charge.qrCodeUrl} className="h-[180px] w-[180px] rounded-md" />
                     </div>
                   </div>
 
