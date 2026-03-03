@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { PixQrCode } from "@/components/payment/PixQrCode";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,6 @@ const Checkout = () => {
   const [view, setView] = useState<CheckoutView>("form");
   const [selectedPreset, setSelectedPreset] = useState<number>(30);
   const [amountText, setAmountText] = useState("30,00");
-  const [anonymous, setAnonymous] = useState(true);
   const [charge, setCharge] = useState<PixCharge | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copiar código Pix");
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,21 +39,26 @@ const Checkout = () => {
     return Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
   }, [amountText]);
 
-  const total = amount;
-
   function onPresetClick(value: number) {
     setSelectedPreset(value);
     setAmountText(value.toFixed(2).replace(".", ","));
   }
 
+  function buildCustomerOrUndefined() {
+    const hasSomeData = customer.name || customer.email || customer.phone || customer.cpf;
+    if (!hasSomeData) return undefined;
+
+    return {
+      name: customer.name.trim() || "Doador",
+      email: customer.email.trim() || "doador@email.com",
+      phone: customer.phone.replace(/\D/g, "") || "11999999999",
+      cpf: customer.cpf.replace(/\D/g, "") || "00000000000",
+    };
+  }
+
   async function handleGeneratePix() {
     if (amount < 20) {
       setErrorMessage("Valor mínimo da doação é R$ 20,00.");
-      return;
-    }
-
-    if (!anonymous && (!customer.name || !customer.email || !customer.phone || !customer.cpf)) {
-      setErrorMessage("Preencha os dados pessoais para continuar.");
       return;
     }
 
@@ -63,13 +68,7 @@ const Checkout = () => {
     try {
       const created = await createPixCharge({
         amount,
-        customer: anonymous
-          ? undefined
-          : {
-              ...customer,
-              cpf: customer.cpf.replace(/\D/g, ""),
-              phone: customer.phone.replace(/\D/g, ""),
-            },
+        customer: buildCustomerOrUndefined(),
       });
 
       setCharge(created);
@@ -106,7 +105,16 @@ const Checkout = () => {
           <CardContent className="space-y-4">
             <section className="space-y-2">
               <Label htmlFor="amount">Valor da contribuição</Label>
-              <Input id="amount" inputMode="decimal" value={amountText} onChange={(e) => setAmountText(e.target.value)} />
+              <div className="flex items-center">
+                <span className="rounded-l-md border border-r-0 bg-muted px-3 py-2 text-sm font-medium text-muted-foreground">R$</span>
+                <Input
+                  id="amount"
+                  inputMode="decimal"
+                  value={amountText}
+                  onChange={(e) => setAmountText(e.target.value)}
+                  className="rounded-l-none"
+                />
+              </div>
 
               <div className="grid grid-cols-3 gap-2">
                 {PRESETS.map((value) => (
@@ -123,24 +131,15 @@ const Checkout = () => {
             </section>
 
             <section className="space-y-3 rounded-lg border bg-muted/20 p-3">
-              <label className="flex items-center gap-2 text-sm font-medium">
-                <input
-                  type="checkbox"
-                  checked={anonymous}
-                  onChange={(e) => setAnonymous(e.target.checked)}
-                  className="h-4 w-4 accent-primary"
-                />
-                Doar anonimamente
-              </label>
-
-              {!anonymous && (
-                <div className="grid gap-3">
-                  <Input placeholder="Nome completo" value={customer.name} onChange={(e) => setCustomer((s) => ({ ...s, name: e.target.value }))} />
-                  <Input placeholder="E-mail" type="email" value={customer.email} onChange={(e) => setCustomer((s) => ({ ...s, email: e.target.value }))} />
+              <p className="text-sm font-medium">Identificação mínima (opcional para recibo)</p>
+              <div className="grid gap-3">
+                <Input placeholder="Nome" value={customer.name} onChange={(e) => setCustomer((s) => ({ ...s, name: e.target.value }))} />
+                <Input placeholder="E-mail" type="email" value={customer.email} onChange={(e) => setCustomer((s) => ({ ...s, email: e.target.value }))} />
+                <div className="grid grid-cols-2 gap-2">
                   <Input placeholder="Telefone" value={customer.phone} onChange={(e) => setCustomer((s) => ({ ...s, phone: e.target.value }))} />
                   <Input placeholder="CPF" value={customer.cpf} onChange={(e) => setCustomer((s) => ({ ...s, cpf: e.target.value }))} />
                 </div>
-              )}
+              </div>
             </section>
 
             <section className="rounded-lg border bg-card p-3">
@@ -150,7 +149,7 @@ const Checkout = () => {
               </div>
               <div className="mt-2 flex items-center justify-between text-base font-semibold">
                 <span>Total</span>
-                <span>{CURRENCY.format(total)}</span>
+                <span>{CURRENCY.format(amount)}</span>
               </div>
             </section>
 
@@ -175,11 +174,7 @@ const Checkout = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="grid place-items-center rounded-lg border bg-muted/20 p-4">
-                {charge.qrCodeUrl ? (
-                  <img src={charge.qrCodeUrl} alt="QR Code Pix" className="h-44 w-44" />
-                ) : (
-                  <div className="grid h-44 w-44 place-items-center rounded-md bg-background text-xs text-muted-foreground">QR Code</div>
-                )}
+                <PixQrCode pixCode={charge.pixCopyPaste} qrCodeUrl={charge.qrCodeUrl} className="h-52 w-52 rounded-md" />
               </div>
 
               <div className="rounded-lg border bg-background p-3">
