@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
+import juizImage from "@/assets/juiz.png";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,8 +27,8 @@ const Index = () => {
       supporters: 18452,
       location: "Brasil",
       organizer: "Organização da campanha",
-      bannerSrc: "/placeholder.svg",
-      bannerAlt: "Banner da campanha",
+      bannerSrc: juizImage,
+      bannerAlt: "Rua alagada com o texto SOS Enchentes Juiz de Fora e Ubá",
     }),
     [],
   );
