@@ -11,7 +11,7 @@ import { createPixCharge, type CheckoutCustomer, type PixCharge } from "@/servic
 const CURRENCY = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 2
 });
 
 const PRESETS = [30, 100, 200] as const;
@@ -30,7 +30,7 @@ const Checkout = () => {
     name: "",
     email: "",
     phone: "",
-    cpf: "",
+    cpf: ""
   });
 
   const amount = useMemo(() => {
@@ -52,7 +52,7 @@ const Checkout = () => {
       name: customer.name.trim() || "Doador",
       email: customer.email.trim() || "doador@email.com",
       phone: customer.phone.replace(/\D/g, "") || "11999999999",
-      cpf: customer.cpf.replace(/\D/g, "") || "00000000000",
+      cpf: customer.cpf.replace(/\D/g, "") || "00000000000"
     };
   }
 
@@ -68,7 +68,7 @@ const Checkout = () => {
     try {
       const created = await createPixCharge({
         amount,
-        customer: buildCustomerOrUndefined(),
+        customer: buildCustomerOrUndefined()
       });
 
       setCharge(created);
@@ -90,7 +90,7 @@ const Checkout = () => {
     <main className="min-h-screen bg-background py-6">
       <div className="mx-auto w-full max-w-[420px] px-4">
         <header className="mb-4 flex items-center justify-between">
-          <h1 className="text-xl font-semibold tracking-tight">Checkout da doação</h1>
+          <h1 className="text-xl font-semibold tracking-tight">faça sua doação</h1>
           <Link to="/" className="text-sm text-primary underline-offset-2 hover:underline">
             Voltar
           </Link>
@@ -112,21 +112,21 @@ const Checkout = () => {
                   inputMode="decimal"
                   value={amountText}
                   onChange={(e) => setAmountText(e.target.value)}
-                  className="rounded-l-none"
-                />
+                  className="rounded-l-none" />
+                
               </div>
 
               <div className="grid grid-cols-3 gap-2">
-                {PRESETS.map((value) => (
-                  <Button
-                    key={value}
-                    type="button"
-                    variant={selectedPreset === value ? "default" : "outline"}
-                    onClick={() => onPresetClick(value)}
-                  >
+                {PRESETS.map((value) =>
+                <Button
+                  key={value}
+                  type="button"
+                  variant={selectedPreset === value ? "default" : "outline"}
+                  onClick={() => onPresetClick(value)}>
+                  
                     {CURRENCY.format(value)}
                   </Button>
-                ))}
+                )}
               </div>
             </section>
 
@@ -155,20 +155,20 @@ const Checkout = () => {
 
             {errorMessage ? <p className="text-sm text-error">{errorMessage}</p> : null}
 
-            {view === "loading" ? (
-              <Button className="w-full" size="lg" disabled>
+            {view === "loading" ?
+            <Button className="w-full" size="lg" disabled>
                 Gerando Pix...
-              </Button>
-            ) : (
-              <Button className="w-full" size="lg" onClick={handleGeneratePix}>
+              </Button> :
+
+            <Button className="w-full" size="lg" onClick={handleGeneratePix}>
                 Gerar Pix
               </Button>
-            )}
+            }
           </CardContent>
         </Card>
 
-        {view === "pix" && charge && (
-          <Card className="mt-4 border-warning/30">
+        {view === "pix" && charge &&
+        <Card className="mt-4 border-warning/30">
             <CardHeader>
               <CardTitle className="text-base">Aguardando pagamento Pix</CardTitle>
             </CardHeader>
@@ -190,19 +190,19 @@ const Checkout = () => {
               </Button>
             </CardContent>
           </Card>
-        )}
+        }
 
-        {view === "success" && (
-          <Card className="mt-4 border-success/30">
+        {view === "success" &&
+        <Card className="mt-4 border-success/30">
             <CardContent className="pt-6">
               <p className="text-sm font-semibold text-success">Pagamento em análise/confirmado.</p>
               <p className="mt-1 text-sm text-muted-foreground">Obrigado por ajudar esta campanha.</p>
             </CardContent>
           </Card>
-        )}
+        }
 
-        {view === "error" && (
-          <Card className="mt-4 border-error/30">
+        {view === "error" &&
+        <Card className="mt-4 border-error/30">
             <CardContent className="pt-6">
               <p className="text-sm font-semibold text-error">Não foi possível gerar o Pix.</p>
               <Button className="mt-3 w-full" variant="outline" onClick={() => setView("form")}>
@@ -210,10 +210,10 @@ const Checkout = () => {
               </Button>
             </CardContent>
           </Card>
-        )}
+        }
       </div>
-    </main>
-  );
+    </main>);
+
 };
 
 export default Checkout;
