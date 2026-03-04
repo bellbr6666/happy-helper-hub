@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import juizImage from "@/assets/juiz.png";
+import vakinhaLogo from "@/assets/vakinha-logo.webp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +22,7 @@ const Index = () => {
     () => ({
       title: "SOS Enchentes Juiz de Fora e Ubá",
       subtitle: "Doe com rapidez, segurança e transparência para apoiar famílias afetadas.",
+      category: "SOS ENCHENTES",
       raised: 1041605.6,
       goal: 2000000,
       supporters: 18452,
@@ -41,14 +43,14 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between px-4 py-3 lg:px-6">
-          <div className="flex items-center gap-2">
-            <div className="grid h-9 w-9 place-items-center rounded-md bg-primary text-primary-foreground">
-              <span className="text-sm font-semibold">V</span>
-            </div>
-            <div className="leading-tight">
-              <p className="text-sm font-semibold">Vakinha</p>
-              <p className="text-xs text-muted-foreground">Campanhas</p>
-            </div>
+          <div className="flex items-center gap-3">
+            <img
+              src={vakinhaLogo}
+              alt="Vakinha"
+              loading="eager"
+              className="h-7 w-auto sm:h-8"
+            />
+            <p className="text-xs text-muted-foreground">Campanhas solidárias verificadas</p>
           </div>
           <Button variant="secondary" size="sm" onClick={() => navigate("/checkout")}>
             Quero Ajudar
@@ -60,18 +62,23 @@ const Index = () => {
         <div className="mx-auto w-full max-w-[420px] px-4 pt-4 lg:max-w-[1120px] lg:px-6 lg:pt-8">
           <div className="grid gap-6 lg:grid-cols-[1fr_380px] lg:items-start">
             <section aria-label="Conteúdo da campanha" className="space-y-4 lg:order-1">
+              <section className="rounded-xl border bg-card p-4 shadow-sm">
+                <Badge className="rounded-full text-xs">{campaign.category}</Badge>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Campanha emergencial para famílias impactadas pelas chuvas em Minas Gerais.
+                </p>
+              </section>
+
               <section className="overflow-hidden rounded-xl border bg-card shadow-sm">
                 <img src={campaign.bannerSrc} alt={campaign.bannerAlt} loading="eager" className="h-[220px] w-full object-cover lg:h-[320px]" />
               </section>
 
               <section className="space-y-3 rounded-xl border bg-card p-4 shadow-sm">
                 <h1 className="text-balance text-2xl font-semibold leading-tight tracking-tight">{campaign.title}</h1>
+                <p className="text-sm text-muted-foreground">{campaign.location}</p>
                 <p className="text-sm text-muted-foreground">{campaign.subtitle}</p>
 
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="rounded-full">
-                    {campaign.location}
-                  </Badge>
                   <Badge variant="secondary" className="rounded-full">
                     {campaign.organizer}
                   </Badge>
@@ -153,7 +160,7 @@ const Index = () => {
               </section>
             </section>
 
-            <aside className="order-first lg:order-2 lg:sticky lg:top-6">
+            <aside className="lg:order-2 lg:sticky lg:top-6">
               <Card className="overflow-hidden rounded-xl">
                 <CardHeader className="space-y-3">
                   <CardTitle className="text-xl">Arrecadação</CardTitle>
