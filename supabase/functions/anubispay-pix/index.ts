@@ -39,8 +39,8 @@ Deno.serve(async (req) => {
 
     const body = (await req.json()) as CreatePixPayload;
 
-    if (!body.amountInCents || body.amountInCents < 2000) {
-      return new Response(JSON.stringify({ error: "Valor mínimo é R$ 20,00." }), {
+    if (!body.amountInCents || body.amountInCents <= 0) {
+      return new Response(JSON.stringify({ error: "Informe um valor maior que R$ 0,00." }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

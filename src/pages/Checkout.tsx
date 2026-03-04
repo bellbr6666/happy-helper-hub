@@ -57,8 +57,8 @@ const Checkout = () => {
   }
 
   async function handleGeneratePix() {
-    if (amount < 20) {
-      setErrorMessage("Valor mínimo da doação é R$ 20,00.");
+    if (amount <= 0) {
+      setErrorMessage("Informe um valor maior que R$ 0,00.");
       return;
     }
 
