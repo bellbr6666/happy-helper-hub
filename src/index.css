@@ -40,6 +40,10 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
+    /* Brand-derived top area */
+    --brand-top-strong: 143 63% 46%;
+    --brand-top-soft: 144 56% 51%;
+
     /* Status (modal Pix) */
     --success: 151 72% 33%;
     --warning: 38 92% 50%;
@@ -85,6 +89,9 @@ All colors MUST be HSL.
     --input: 217.2 32.6% 17.5%;
     --ring: 151 72% 45%;
 
+    --brand-top-strong: 143 58% 36%;
+    --brand-top-soft: 144 44% 30%;
+
     --success: 151 72% 45%;
     --warning: 38 92% 55%;
     --error: 0 84% 65%;
@@ -125,6 +132,18 @@ All colors MUST be HSL.
   }
   .campaign-prose ul {
     @apply mt-2 list-disc space-y-1 pl-5 text-sm;
+  }
+}
+
+@layer components {
+  .top-brand-surface {
+    background: linear-gradient(180deg, hsl(var(--brand-top-strong)) 0%, hsl(var(--brand-top-soft)) 100%);
+    color: hsl(var(--primary-foreground));
+  }
+
+  .top-brand-ramp {
+    background-image: linear-gradient(180deg, hsl(var(--brand-top-soft) / 0.2) 0px, hsl(var(--background)) 220px);
+    background-repeat: no-repeat;
   }
 }
 

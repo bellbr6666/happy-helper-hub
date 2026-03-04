@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import juizImage from "@/assets/juiz.png";
-import vakinhaLogo from "@/assets/vakinha-logo.webp";
+import vakinhaLogo from "@/assets/vakinha-logo-top.webp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -40,19 +40,24 @@ const Index = () => {
   }, [campaign.goal, campaign.raised]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <div className="min-h-screen bg-background top-brand-ramp">
+      <header className="top-brand-surface border-b border-border/30">
         <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between px-4 py-3 lg:px-6">
           <div className="flex items-center gap-3">
             <img
               src={vakinhaLogo}
               alt="Vakinha"
               loading="eager"
-              className="h-7 w-auto sm:h-8"
+              className="h-8 w-auto object-contain sm:h-9"
             />
-            <p className="text-xs text-muted-foreground">Campanhas solidárias verificadas</p>
+            <p className="text-xs text-primary-foreground/90">Campanhas solidárias verificadas</p>
           </div>
-          <Button variant="secondary" size="sm" onClick={() => navigate("/checkout")}>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="bg-background/95 text-foreground hover:bg-background"
+            onClick={() => navigate("/checkout")}
+          >
             Quero Ajudar
           </Button>
         </div>
