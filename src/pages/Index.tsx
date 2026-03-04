@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import juizImage from "@/assets/juiz.png";
@@ -34,10 +34,20 @@ const Index = () => {
     [],
   );
 
+  const [currentRaised, setCurrentRaised] = useState(campaign.raised);
+
   const progressValue = useMemo(() => {
-    const ratio = campaign.raised / campaign.goal;
+    const ratio = currentRaised / campaign.goal;
     return Math.round(Math.min(ratio, 1) * 100);
-  }, [campaign.goal, campaign.raised]);
+  }, [campaign.goal, currentRaised]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentRaised((prev) => prev + Math.random() * 70 + 30);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background top-brand-ramp">
@@ -171,7 +181,7 @@ const Index = () => {
                   <CardTitle className="text-xl">Arrecadação</CardTitle>
                   <div className="rounded-lg bg-muted/40 p-3">
                     <p className="text-xs text-muted-foreground">Arrecadado</p>
-                    <p className="text-2xl font-semibold tracking-tight">{CURRENCY.format(campaign.raised)}</p>
+                    <p className="text-2xl font-semibold tracking-tight">{CURRENCY.format(currentRaised)}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -208,7 +218,7 @@ const Index = () => {
         <div className="fixed inset-x-0 bottom-0 z-40 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:hidden">
           <div className="mx-auto flex w-full max-w-[420px] items-center gap-3 px-4 py-3">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs text-muted-foreground">{CURRENCY.format(campaign.raised)} arrecadados</p>
+              <p className="truncate text-xs text-muted-foreground">{CURRENCY.format(currentRaised)} arrecadados</p>
               <p className="text-sm font-semibold">Ajude agora</p>
             </div>
             <Button size="lg" className="shrink-0" onClick={() => navigate("/checkout")}>
